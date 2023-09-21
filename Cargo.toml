@@ -1,6 +1,6 @@
 [package]
 name = "cnctd_git"
-version = "0.1.1"
+version = "0.1.2"
 edition = "2021"
 authors = ["Connected Dot Inc.", "Kyle Ebner <kyle@cnctd.world>"]
 description = "Git methods"
@@ -9,7 +9,10 @@ license = "MIT"
 # See more keys and their definitions at https://doc.rust-lang.org/cargo/reference/manifest.html
 
 [dependencies]
+anyhow = "1.0.75"
+cnctd_rest = { version = "0.1.1", path = "../cnctd_rest" }
 git2 = "0.18.0"
 reqwest = { version = "0.11.20", features = ["json"] }
 serde = { version = "1.0.188", features = ["derive"] }
 serde_json = "1.0.107"
+tokio = { version = "1.32.0", features = ["full"] }
