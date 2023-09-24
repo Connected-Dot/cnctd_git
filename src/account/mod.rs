@@ -3,7 +3,7 @@ use serde::{Deserialize, Serialize};
 use serde_json::Value;
 use anyhow::anyhow;
 
-use crate::GitProvider;
+use crate::{GitProvider, api::rest::GitRest};
 
 #[derive(Debug, Deserialize, Serialize, Clone)]
 pub struct GitAccount {
@@ -45,17 +45,7 @@ impl GitAccount {
         };
         
         // Fetch organizations based on the provider
-        let org_urls = match &provider {
-            GitProvider::GitHub => {
-                let orgs: Vec<Value> = Rest::get_with_auth("https://api.github.com/user/orgs", token).await?;
-                let urls: Vec<String> = orgs.iter()
-                    .map(|org| format!("https://github.com/{}", org["login"].as_str().unwrap()))
-                    .collect();
-                Ok(urls)
-            },
-            // Add logic for other providers here...
-            _ => Err(anyhow!("provider not yet supported")),
-        }?;
+        let org_urls = GitRest::org_urls(&provider, token).await?;
 
 
         Ok(Self {
