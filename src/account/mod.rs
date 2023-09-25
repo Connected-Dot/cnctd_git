@@ -1,3 +1,5 @@
+use std::fmt::{Display, self};
+
 use cnctd_rest::Rest;
 use serde::{Deserialize, Serialize};
 use serde_json::Value;
@@ -34,6 +36,12 @@ impl GitUser {
     }
 }
 
+impl Display for GitAccount {
+    fn fmt(&self, f: &mut fmt::Formatter) -> fmt::Result {
+        let display_str = &self.login;
+        write!(f, "{}", display_str)
+    }
+}
 impl GitAccount {
     pub async fn new(provider: GitProvider, token: &str) -> anyhow::Result<Self> {
         let login = GitUser::get(&provider, token).await?.login;
@@ -58,5 +66,13 @@ impl GitAccount {
         })
     }
 
+    pub fn url_is_org(&self) -> bool {
+        self.org_urls.contains(&self.default_url)
+    }
+
+    pub fn get_org_from_url(&self) -> String {
+        let parts: Vec<&str> = self.default_url.split('/').collect();
+        parts.last().map(|s| s.to_string()).unwrap()
+    }
 
 }
