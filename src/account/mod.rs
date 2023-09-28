@@ -2,7 +2,6 @@ use std::fmt::{Display, self};
 
 use cnctd_rest::Rest;
 use serde::{Deserialize, Serialize};
-use serde_json::Value;
 use anyhow::anyhow;
 
 use crate::{GitProvider, api::rest::GitRest};
